@@ -8,6 +8,7 @@ use std::{
 
 use hash_algo::{
     HashAlgorithm,
+    md2::Md2Hash,
     md5::Md5Hash,
     sha1::Sha1Hash,
     sha2::Sha2Hash,
@@ -23,7 +24,7 @@ struct Cli {
     #[arg(long, value_name = "HASH", required = true)]
     hash: String,
 
-    #[arg(short, long, value_name = "MODE", required = true, help = "md5, sha1, sha2, sha3")]
+    #[arg(short, long, value_name = "MODE", required = true, help = "md2, md5, sha1, sha2, sha3")]
     mode: String,
 }
 
@@ -32,6 +33,7 @@ fn main() {
 
     // choose hasher based on mode
     let hasher: Box<dyn HashAlgorithm> = match cli.mode.as_str() {
+        "md2" => Box::new(Md2Hash),
         "md5" => Box::new(Md5Hash),
         "sha1" => Box::new(Sha1Hash),
         "sha2" => Box::new(Sha2Hash),
