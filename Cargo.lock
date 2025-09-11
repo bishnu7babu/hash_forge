@@ -158,6 +158,7 @@ version = "0.1.0"
 dependencies = [
  "clap",
  "md2",
+ "md4",
  "md5",
  "sha1",
  "sha2",
@@ -196,6 +197,15 @@ name = "md2"
 version = "0.10.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "1f4f0f3ed25ff4f8d8d102288d92f900efc202661c884cf67dfe4f0d07c43d1f"
+dependencies = [
+ "digest",
+]
+
+[[package]]
+name = "md4"
+version = "0.10.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7da5ac363534dce5fabf69949225e174fbf111a498bf0ff794c8ea1fba9f3dda"
 dependencies = [
  "digest",
 ]
