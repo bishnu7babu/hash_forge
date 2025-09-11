@@ -6,6 +6,8 @@ use std::{
     path::PathBuf,
 };
 
+use hash_algo::bcrypt::BcryptHash;
+
 use hash_algo::{
     HashAlgorithm,
     md2::Md2Hash,
@@ -26,26 +28,35 @@ struct Cli {
     #[arg(long, value_name = "HASH", required = true)]
     hash: String,
 
-    #[arg(short, long, value_name = "MODE", required = true, help = "md2, md4, md5, md6, sha1, sha2, sha3")]
-    mode: String,
+    #[arg(short, long, value_name = "MODE", required = true, )]
+    mode: HashMode,
 }
+// help = "md2, md4, md5, md6, sha1, sha2, sha3"
+#[derive(clap::ValueEnum, Clone, Debug)]
+enum HashMode {
+    Md2,
+    Md4,
+    Md5,
+    Md6,
+    Sha1,
+    Sha2,
+    Sha3,
+    Bcrypt,
+}
+
 
 fn main() {
     let cli = Cli::parse();
 
-    // choose hasher based on mode
-    let hasher: Box<dyn HashAlgorithm> = match cli.mode.as_str() {
-        "md2" => Box::new(Md2Hash),
-        "md4" => Box::new(Md4Hash),
-        "md5" => Box::new(Md5Hash),
-        "md6" => Box::new(Md6Hash),
-        "sha1" => Box::new(Sha1Hash),
-        "sha2" => Box::new(Sha2Hash),
-        "sha3" => Box::new(Sha3Hash),
-        _ => {
-            eprintln!("Unsupported mode: {}", cli.mode);
-            return;
-        }
+    let hasher: Box<dyn HashAlgorithm> = match cli.mode {
+        HashMode::Md2 => Box::new(Md2Hash),
+        HashMode::Md4 => Box::new(Md4Hash),
+        HashMode::Md5 => Box::new(Md5Hash),
+        HashMode::Md6 => Box::new(Md6Hash),
+        HashMode::Sha1 => Box::new(Sha1Hash),
+        HashMode::Sha2 => Box::new(Sha2Hash),
+        HashMode::Sha3 => Box::new(Sha3Hash),
+        HashMode::Bcrypt => Box::new(BcryptHash::new(cli.hash.clone())),
     };
 
     let file = match std::fs::File::open(&cli.file) {
@@ -61,6 +72,7 @@ fn main() {
     for (i, line) in reader.lines().enumerate() {
         match line {
             Ok(word) => {
+                println!("{}",word);
                 let computed_hash = hasher.hash_hex(word.as_bytes());
                 if computed_hash == cli.hash {
                     println!("✅ Match found at line {}: {}", i + 1, word);

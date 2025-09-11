@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+bcrypt = "0.17.1"
 clap = { version = "4.5.47", features = ["derive"] }
 md2 = "0.10.2"
 md4 = "0.10.2"
