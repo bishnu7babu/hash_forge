@@ -11,6 +11,7 @@ use hash_algo::{
     md5::Md5Hash,
     sha1::Sha1Hash,
     sha2::Sha2Hash,
+    sha3::Sha3Hash,
 };
 
 #[derive(Parser)]
@@ -22,7 +23,7 @@ struct Cli {
     #[arg(long, value_name = "HASH", required = true)]
     hash: String,
 
-    #[arg(short, long, value_name = "MODE", required = true, help = "md5, sha1, sha2")]
+    #[arg(short, long, value_name = "MODE", required = true, help = "md5, sha1, sha2, sha3")]
     mode: String,
 }
 
@@ -34,6 +35,7 @@ fn main() {
         "md5" => Box::new(Md5Hash),
         "sha1" => Box::new(Sha1Hash),
         "sha2" => Box::new(Sha2Hash),
+        "sha3" => Box::new(Sha3Hash),
         _ => {
             eprintln!("Unsupported mode: {}", cli.mode);
             return;
