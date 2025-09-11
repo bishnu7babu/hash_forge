@@ -11,6 +11,7 @@ use hash_algo::{
     md2::Md2Hash,
     md4::Md4Hash,
     md5::Md5Hash,
+    md6::Md6Hash,
     sha1::Sha1Hash,
     sha2::Sha2Hash,
     sha3::Sha3Hash,
@@ -25,7 +26,7 @@ struct Cli {
     #[arg(long, value_name = "HASH", required = true)]
     hash: String,
 
-    #[arg(short, long, value_name = "MODE", required = true, help = "md2, md4, md5, sha1, sha2, sha3")]
+    #[arg(short, long, value_name = "MODE", required = true, help = "md2, md4, md5, md6, sha1, sha2, sha3")]
     mode: String,
 }
 
@@ -37,6 +38,7 @@ fn main() {
         "md2" => Box::new(Md2Hash),
         "md4" => Box::new(Md4Hash),
         "md5" => Box::new(Md5Hash),
+        "md6" => Box::new(Md6Hash),
         "sha1" => Box::new(Sha1Hash),
         "sha2" => Box::new(Sha2Hash),
         "sha3" => Box::new(Sha3Hash),
