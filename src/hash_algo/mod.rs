@@ -1,5 +1,6 @@
 pub mod md5;
 pub mod sha1;
+pub mod sha2;
 pub trait HashAlgorithm {
      fn name(&self) -> &str;
      fn hash(&self, input: &[u8]) -> Vec<u8>;

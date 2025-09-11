@@ -5,10 +5,13 @@ use std::{
     io::{self, BufRead},
     path::PathBuf,
 };
-use md5;
-use sha1::{Digest, Sha1};
 
-use hash_algo::{HashAlgorithm,md5::Md5Hash, sha1::Sha1Hash};
+use hash_algo::{
+    HashAlgorithm,
+    md5::Md5Hash,
+    sha1::Sha1Hash,
+    sha2::Sha2Hash,
+};
 
 #[derive(Parser)]
 #[command(version, about, long_about = None)]
@@ -19,7 +22,7 @@ struct Cli {
     #[arg(long, value_name = "HASH", required = true)]
     hash: String,
 
-    #[arg(short, long, value_name = "MODE", required = true, help = "md5, sha1")]
+    #[arg(short, long, value_name = "MODE", required = true, help = "md5, sha1, sha2")]
     mode: String,
 }
 
@@ -30,6 +33,7 @@ fn main() {
     let hasher: Box<dyn HashAlgorithm> = match cli.mode.as_str() {
         "md5" => Box::new(Md5Hash),
         "sha1" => Box::new(Sha1Hash),
+        "sha2" => Box::new(Sha2Hash),
         _ => {
             eprintln!("Unsupported mode: {}", cli.mode);
             return;
