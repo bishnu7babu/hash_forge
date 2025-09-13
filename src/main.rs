@@ -99,27 +99,8 @@ fn word_comp(cli: &Cli, hasher: &dyn HashAlgorithm) {
     println!("❌ No match found.");
 }
 
-fn test_scrypt_debug() {
-    use hash_algo::scrypt::ScryptHash;
-    use hash_algo::HashAlgorithm;
-    
-    println!("=== SCRYPT DEBUG TEST ===");
-    
-    // Test with known values that should match CyberChef
-    let hasher = ScryptHash::new(16384, 8, 1, "man".to_string(), 32);
-    let password = "computer";
-    
-    println!("Testing password: '{}'", password);
-    let hash = hasher.hash_hex(password.as_bytes());
-    println!("Generated hash: {}", hash);
-    println!("Expected hash: 8ec6f32039def1f41cc5f4db3ee19d9bd7b65f37f40ed78c6463471d2ba1ce32");
-    println!("Match: {}", hash == "8ec6f32039def1f41cc5f4db3ee19d9bd7b65f37f40ed78c6463471d2ba1ce32");
-    println!("=== END DEBUG TEST ===");
-}
-
 
 fn main() {
-    test_scrypt_debug();
     let cli = Cli::parse();
     
     let hasher: Box<dyn HashAlgorithm> = match cli.mode {
